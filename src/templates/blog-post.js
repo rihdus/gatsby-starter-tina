@@ -5,10 +5,47 @@ import Bio from "../components/bio"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 
+import { TinaProvider, useCMS, useForm, usePlugin } from 'tinacms';
+
 const BlogPostTemplate = ({ data, location }) => {
+  const cms = useCMS();
+
   const post = data.markdownRemark
   const siteTitle = data.site.siteMetadata?.title || `Title`
   const { previous, next } = data
+
+
+  const formConfig = {
+    id: 'tina-tutorial-index',
+    label: 'Edit Page',
+    fields: [
+      {
+        name: 'title',
+        label: 'Title',
+        component: 'text',
+      },
+      {
+        name: 'body',
+        label: 'Body',
+        component: 'textarea',
+      },
+    ],
+    initialValues: {
+      title: "Title",
+      body: "body"
+    },
+    onSubmit: async () => {
+      window.alert('Saved!')
+    },
+  }
+
+  // 3. Create the form
+  const [editableData, form] = useForm(formConfig)
+
+  // 4. Register it with the CMS
+  usePlugin(form)
+
+  console.log(editableData)
 
   return (
     <Layout location={location} title={siteTitle}>
@@ -16,6 +53,13 @@ const BlogPostTemplate = ({ data, location }) => {
         title={post.frontmatter.title}
         description={post.frontmatter.description || post.excerpt}
       />
+      <button onClick={() => cms.toggle()}>
+          {cms.enabled ? 'Exit Edit Mode' : 'Edit This Site'}
+      </button>
+
+      <h2>Editable data</h2>
+      <p>{editableData.body}</p>
+
       <article
         className="blog-post"
         itemScope

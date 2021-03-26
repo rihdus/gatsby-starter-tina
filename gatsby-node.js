@@ -113,3 +113,23 @@ exports.createSchemaCustomization = ({ actions }) => {
     }
   `)
 }
+
+exports.onCreateWebpackConfig = ({
+  stage,
+  rules,
+  loaders,
+  plugins,
+  actions,
+}) => {
+  actions.setWebpackConfig({
+    module: {
+      rules: [],
+    },
+    plugins: [],
+    resolve: {
+      fallback: {
+        path: require.resolve("path-browserify")
+      }
+    }
+  })
+}
