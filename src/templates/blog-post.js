@@ -5,7 +5,7 @@ import Bio from "../components/bio"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 
-import { TinaProvider, useCMS, useForm, usePlugin } from 'tinacms';
+import { useCMS, useForm, usePlugin } from 'tinacms';
 
 const BlogPostTemplate = ({ data, location }) => {
   const cms = useCMS();
